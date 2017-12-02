@@ -3,10 +3,15 @@ from queue import Queue
 
 class prod_model:
     user_rule = dict()
+    all_rule  = dict()
 
-    def __init__(self, file):
-        js_obj = open(file, "r", encoding='utf-8')
+    def __init__(self, file_rule, file_all_rule):
+
+        js_obj = open(file_rule, "r", encoding='utf-8')
         self.user_rule = json.load((js_obj))
+
+        js_obj1 = open(file_all_rule, "r", encoding='utf-8')
+        self.all_rule = json.load((js_obj1))
 
     def start_search(self):
         init_set = self.I;
