@@ -13,36 +13,7 @@ class prod_model:
         js_obj1 = open(file_all_rule, "r", encoding='utf-8')
         self.all_rule = json.load((js_obj1))
 
-    def start_search(self):
-        init_set = self.I;
-        for k in self.rule.keys():
-            print(k)
-            a = int(input())
-            if (a == 1):
-                init_set -= (init_set - set(self.rule[k]))
-            if (a == 0):
-                init_set -= set(self.rule[k])
-        print(init_set)
-
-    def start_search_other_file(self):
-        init_question = 'Это простой эллемент?'
-        print(init_question)
-        a = (input())
-
-        while (type(init_question) != type([])):
-            if (a=='+'):
-                init_question = self.user_rule[init_question][0]
-            else:
-                if (a=='-'):
-                    init_question = self.user_rule[init_question][1]
-                else:
-                    init_question = ['Null']
-
-            print(init_question)
-
-            a = input()
-
-    def start_search_many_rull(self, list_rule = []) :
+    def direct_searcj(self, list_rule = []) :
         queue_rule  = Queue()
         result_set = set()
 
@@ -57,4 +28,22 @@ class prod_model:
                 else:
                     queue_rule.put(rule)
         print(result_set)
+
+    def reverse_search(self, ellements = []):
+        queue_ell = Queue()
+        result_set = set()
+
+        for ell in ellements:
+            queue_ell.put(ell)
+
+        while (queue_ell.qsize() != 0):
+            ell = queue_ell.get()
+            for key in self.user_rule.keys():
+                if (self.user_rule[key].count(ell) != 0):
+                    result_set.add(key)
+                    queue_ell.put((key))
+
+        print(result_set)
+
+
 
