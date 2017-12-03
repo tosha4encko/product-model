@@ -52,10 +52,9 @@ class prod_model:
         while (queue_rule.qsize() != 0):
             next_rule = self.user_rule[queue_rule.get()]
             for rule in next_rule:
-                if (type(rule) == type([])):
-                    result_set = result_set.union(set(rule))
-
-                if (type(rule) == type('')):
+                if (rule[0] == '_'):
+                    result_set = result_set.union([rule])
+                else:
                     queue_rule.put(rule)
-
         print(result_set)
+
