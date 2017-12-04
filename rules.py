@@ -40,10 +40,9 @@ class prod_model:
             ell = queue_ell.get()
             for key in self.user_rule.keys():
                 if (self.user_rule[key].count(ell) != 0):
+                    print(self.all_rule[key])
                     result_set.add(key)
                     queue_ell.put((key))
-
-        print(result_set)
 
 
 
