@@ -1,5 +1,6 @@
 import re
 import json
+import codecs
 
 def ind_facts(facts = [], dict_fact = dict()):
     res_list = []
@@ -12,7 +13,7 @@ def ind_facts(facts = [], dict_fact = dict()):
 
 f = open('rules.txt',  encoding='utf-8')
 oll_text_rule = f.read()
-text_rule = re.split(r'-> | & |\n', oll_text_rule)
+text_rule = re.split(r' -> | & |\n|,|\[|\]', oll_text_rule)
 
 ind_fact = 0
 dict_fact = dict()
@@ -23,15 +24,21 @@ for rule in set_fact:
         dict_fact[str(ind_fact)] = rule
     ind_fact += 1
 
-dicts_rul = []
+dicts_rul = dict()
 list_ruls = re.findall(r'.+', oll_text_rule)
 for ruls in list_ruls:
-    package_result = re.split(r'-> ', ruls)
-    dicts_rul.append({'&': ind_facts(re.split(r' & ', package_result[0]), dict_fact), '=' : ind_facts(re.split(r' & ', package_result[1]), dict_fact)})
+    package_result = re.split(r' -> ', ruls)
+    list_res  = re.split(r'\[|\]|, ', package_result[1])
+    list_pack = re.split(r' & ', package_result[0])
+    for res in list_res:
+        key = ind_facts([res], dict_fact)
+        if (len(key) > 0):
+            dicts_rul[key[0]] = ind_facts(list_pack, dict_fact)
 
-with open('rulesv3.json', 'w') as outfile:
-    outfile.write(json.dumps({'rules': dicts_rul}))
+with open('rules_v4.json', 'w') as outfile:
+    outfile.write(json.dumps(dicts_rul))
 
-import codecs
 with open('fuctsv3.json', 'wb') as f:
     json.dump(dict_fact, codecs.getwriter('utf-8')(f), ensure_ascii=False)
+
+

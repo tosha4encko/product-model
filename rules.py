@@ -13,36 +13,37 @@ class prod_model:
         js_obj1 = open(file_all_rule, "r", encoding='utf-8')
         self.all_rule = json.load((js_obj1))
 
-    def direct_searcj(self, list_rule = []) :
-        queue_rule  = Queue()
-        result_set = set()
+    def ind_facts(self, facts=[]):
+        res_list = []
 
-        for rule in list_rule:
-            queue_rule.put(rule)
+        for fact in facts:
+            for key in self.all_rule.keys():
+                if (self.all_rule[key] == fact):
+                    res_list.append(key)
+                    break
+        return res_list
 
-        while (queue_rule.qsize() != 0):
-            next_rule = self.user_rule[queue_rule.get()]
-            for rule in next_rule:
-                if (rule[0] == '_'):
-                    result_set = result_set.union([rule])
-                else:
-                    queue_rule.put(rule)
-        print(result_set)
+    def direct_search(self, list_ruls = []):
+        set_rule = set(self.ind_facts(list_ruls))
+
+        for key in self.user_rule.keys():
+            if (set(self.user_rule[key]) <= set_rule):
+                set_rule.add(key)
+
+        for fact in set_rule:
+            print(self.all_rule[fact])
+        print()
 
     def reverse_search(self, ellements = []):
-        queue_ell = Queue()
-        result_set = set()
+        set_rule = set(self.ind_facts(ellements))
+        list_key = self.user_rule.keys()
+        for fact in set_rule:
+            if (fact in list_key):
+                set_rule = set_rule.union(set(self.user_rule[fact]))
 
-        for ell in ellements:
-            queue_ell.put(ell)
-
-        while (queue_ell.qsize() != 0):
-            ell = queue_ell.get()
-            for key in self.user_rule.keys():
-                if (self.user_rule[key].count(ell) != 0):
-                    print(self.all_rule[key])
-                    result_set.add(key)
-                    queue_ell.put((key))
+        for fact in set_rule:
+            print(self.all_rule[fact])
+        print()
 
 
 
