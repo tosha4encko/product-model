@@ -13,7 +13,7 @@ class prod_model:
         js_obj1 = open(file_all_rule, "r", encoding='utf-8')
         self.all_rule = json.load((js_obj1))
 
-    def ind_facts(self, facts=[]):
+    def ind_facts(self, facts):
         res_list = []
 
         for fact in facts:
